@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1{
+            text-align: center;
+            font-size: 50px;
+        }
+        #timer-display{
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 80px;
+        }
+        div{
+            margin-top: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        button{
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #start:hover{
+            background-color: lightgreen;
+        }
+        #stop:hover{
+            background-color: rgba(255, 0, 0, 0.556);
+        }
+        #reset:hover{
+            background-color: gray;
+        }
+
+        #elapsed-time{
+            display: block;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timer Application</h1>
+    <p id="timer-display">00:00</p>
+    <div>
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+    </div>
+    <div id="elapsed-time"></div>
+    <script>
+
+       let display = document.querySelector("#timer-display") 
+       let totalSeconds = 0
+       let timerId 
+       let isrunning = false
+
+        function showtime() 
+        {
+            if(!isrunning) return
+
+            let minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0')
+            let seconds = String(totalSeconds % 60).padStart(2, '0')
+
+            display.textContent = `${minutes}:${seconds}`
+    
+            totalSeconds++
+            timerId = setTimeout(showtime, 1000)
+        }
+
+        let start = document.querySelector("#start")
+        start.addEventListener("click", startTimer)
+        function startTimer() 
+        {
+            if (!isrunning) 
+            { 
+                isrunning = true
+                showtime()
+            }
+        }
+
+        let stop = document.querySelector("#stop")
+        stop.addEventListener("click", stopTimer)
+
+        let elapsedTime = document.querySelector("#elapsed-time") 
+        function stopTimer() 
+        {
+           isrunning = false
+           clearTimeout(timerId)
+
+           let stoptime = totalSeconds-1 
+            
+           let minutes = String(Math.floor(stoptime / 60)).padStart(2, '0')
+           let seconds = String(stoptime % 60).padStart(2, '0')
+           
+           let etime = document.createElement("p")
+           if(stoptime == -1){
+             etime.textContent = `Elapsed time: 00:00`
+           }
+           else{
+             etime.textContent = `Elapsed time: ${minutes}:${seconds}`
+           }
+
+           elapsedTime.appendChild(etime)
+        }
+
+        let reset = document.querySelector("#reset")
+        reset.addEventListener("click", resetTimer)
+        function resetTimer()
+        {
+            totalSeconds = 0
+            elapsedTime.innerHTML = ""
+            display.textContent = "00:00"
+            clearTimeout(timerId)
+        }
+
+    </script>
+</body>
+</html>
