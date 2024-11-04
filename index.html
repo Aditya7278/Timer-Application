@@ -112,9 +112,10 @@
         reset.addEventListener("click", resetTimer)
         function resetTimer()
         {
-            totalSeconds = 0
-            elapsedTime.innerHTML = ""
-            display.textContent = "00:00"
+            isrunning = false       
+            totalSeconds = 0   
+            elapsedTime.innerHTML = ""   
+            display.textContent = "00:00"    
             clearTimeout(timerId)
         }
 
